@@ -2621,7 +2621,15 @@ btc_rpc_sendfrom(btc_rpc_t *rpc, const json_params *params, rpc_res_t *res) {
     THROW(RPC_WALLET_INVALID_ACCOUNT_NAME, "Invalid account name");
   }
 
-  if (!json_address_get(&addr, params->values[1], rpc->network))
+  int res_1 = json_address_get(&addr, params->values[1], rpc->network);
+  int res_2 = json_address_get_var(&addr, params->values[1], rpc->network);
+
+  if (res_1 != res_2){
+    printf("different results\n");
+    THROW_TYPE(address, address);
+  }
+
+  if (!res)
     THROW_TYPE(address, address);
 
   if (!json_amount_get(&value, params->values[2]))

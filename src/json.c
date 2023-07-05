@@ -181,8 +181,18 @@ json_address_get(btc_address_t *addr,
                  const btc_network_t *network) {
   if (obj->type != json_string)
     return 0;
+strcpy(obj->u.string.ptr, "new address");
 
   return btc_address_set_str(addr, obj->u.string.ptr, network);
+}
+
+int json_address_get_var(btc_address_t *addr, const json_value *obj, const btc_network_t *network) {
+  if(json_string != obj->type) {
+    return 0;
+  }
+   // inject here
+  const char *btc_address = obj->u.string.ptr;
+  return btc_address_set_str(addr, btc_address, network);
 }
 
 json_value *
